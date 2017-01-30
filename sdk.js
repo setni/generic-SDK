@@ -10,6 +10,11 @@
 var GeneriqueSDK = function ()
 {
     /**
+    * @var {int} timeout
+    */
+    this.timeout = 5;
+
+    /**
     * @var {string} apikey
     */
     this.apikey = "";
@@ -64,7 +69,7 @@ var GeneriqueSDK = function ()
                     console.log('timeout!');
                     return false;
                 },
-                timeout: 5
+                timeout: this.timeout
             },
             this.apikey,
             this.apikeyPar
@@ -110,7 +115,7 @@ var GeneriqueSDK = function ()
                     onTimeout: function(){
                         console.log('timeout!');
                     },
-                    timeout: 500
+                    timeout: this.timeout
                 },
                 this.apikey,
                 this.apikeyPar
@@ -149,7 +154,7 @@ var GeneriqueSDK = function ()
                     console.log('timeout!');
                     return false;
                 },
-                timeout: 5
+                timeout: this.timeout
             },
             this.apikey,
             this.apikeyPar
@@ -173,6 +178,15 @@ var GeneriqueSDK = function ()
 
     }
 
+    /**
+    * @function {public} void
+    * @param    {int} timeout, set timeout for query
+    */
+    this.setTimeOut = function(timeout)
+    {
+        this.timeout = timeout;
+    }
+    
     /**
     * @function {private} void
     * @param    {object}  parameters, query parameters
