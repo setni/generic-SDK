@@ -77,15 +77,40 @@ var GeneriqueSDK = function ()
     };
 
     /**
-    * @function {public} void
-    * @param    {string} unique apiKey
-    * @param    {string} apiKey par
+    * @function {public} bool
+    * @return   {bool}   true on success, false else
+    * @param    {object} disconnect parameter
     */
-    this.setApikey = function (apikey, apikeyPar) {
-        this.apikey = apikey;
-        this.apikeyPar = apikeyPar || "apikey";
-        params.connect = true;
-    }
+    this.disconnect = function (object)
+    {
+
+        privateM.sendJSONPRequest(
+            object,
+            {
+                callbackName: 'handleStuff',
+                onSuccess: function(json){
+                    if(json.success) {
+
+                        param.connect = false;
+                        return true;
+
+                    } else {
+
+                        console.log("connection failed");
+                        return false;
+
+                    }
+                },
+                onTimeout: function(){
+                    console.log('timeout!');
+                    return false;
+                },
+                timeout: this.timeout
+            },
+            this.apikey,
+            this.apikeyPar
+        );
+    };
 
     /**
     * @function {public}    void
@@ -127,39 +152,15 @@ var GeneriqueSDK = function ()
     };
 
     /**
-    * @function {public} bool
-    * @return   {bool}   true on success, false else
+    * @function {public} void
+    * @param    {string} unique apiKey
+    * @param    {string} apiKey par
     */
-    this.disconnect = function ()
-    {
-
-        privateM.sendJSONPRequest(
-            {action: "DISCONNECT"},
-            {
-                callbackName: 'handleStuff',
-                onSuccess: function(json){
-                    if(json.success) {
-
-                        param.connect = false;
-                        return true;
-
-                    } else {
-
-                        console.log("connection failed");
-                        return false;
-
-                    }
-                },
-                onTimeout: function(){
-                    console.log('timeout!');
-                    return false;
-                },
-                timeout: this.timeout
-            },
-            this.apikey,
-            this.apikeyPar
-        );
-    };
+    this.setApikey = function (apikey, apikeyPar) {
+        this.apikey = apikey;
+        this.apikeyPar = apikeyPar || "apikey";
+        params.connect = true;
+    }
 
     /**
     * @function {public} void
@@ -186,7 +187,7 @@ var GeneriqueSDK = function ()
     {
         this.timeout = timeout;
     }
-    
+
     /**
     * @function {private} void
     * @param    {object}  parameters, query parameters
